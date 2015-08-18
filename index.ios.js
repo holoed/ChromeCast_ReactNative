@@ -47,6 +47,10 @@ var ChromeCastExperiments = React.createClass({
     NativeModules.CalendarManager.disconnect();
   },
 
+  castVideo: function() {
+    NativeModules.CalendarManager.castVideo();
+  },
+
   render: function() {
     var _this = this;
     return (
@@ -74,6 +78,11 @@ var ChromeCastExperiments = React.createClass({
              </TouchableHighlight>);
           })
         }
+        <TouchableHighlight onPress={this.castVideo}>
+          <Text style={styles.welcome}>
+            Cast Video
+          </Text>
+        </TouchableHighlight>
         <TouchableHighlight onPress={this.disconnect}>
           <Text style={styles.welcome}>
             Disconnect
