@@ -24,13 +24,6 @@ var ChromeCastExperiments = React.createClass({
     NativeModules.ChromecastManager.initialize();
   },
 
-  addDevicesToList: function() {
-    NativeModules.ChromecastManager.addEvent(
-            'Birthday Party',
-            '4 Privet Drive, Surrey',
-            42);
-  },
-
   getDevicesNames: function() {
     var _this = this;
     NativeModules.ChromecastManager.getEventName(function (x) {
@@ -48,7 +41,7 @@ var ChromeCastExperiments = React.createClass({
   },
 
   castVideo: function() {
-    NativeModules.ChromecastManager.castVideo();
+    NativeModules.ChromecastManager.castVideo("http://192.168.0.19/Movies/Fun%20with%20Dick%20and%20Jane.mp4");
   },
 
   render: function() {
@@ -58,11 +51,6 @@ var ChromeCastExperiments = React.createClass({
         <TouchableHighlight onPress={this.initialize}>
           <Text style={styles.welcome}>
             Create Device Scanner
-          </Text>
-        </TouchableHighlight>
-        <TouchableHighlight onPress={this.addDevicesToList}>
-          <Text style={styles.welcome}>
-            Add Devices to list
           </Text>
         </TouchableHighlight>
         <TouchableHighlight onPress={this.getDevicesNames}>

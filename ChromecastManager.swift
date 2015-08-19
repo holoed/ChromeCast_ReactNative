@@ -17,6 +17,8 @@ class ChromecastManager: NSObject, GCKDeviceScannerListener, GCKDeviceManagerDel
   private var deviceManager: GCKDeviceManager?
   private var deviceScanner: GCKDeviceScanner
   private var mediaControlChannel: GCKMediaControlChannel?
+  
+  private var successCallback: RCTResponseSenderBlock?
 
   private lazy var kReceiverAppID:String = {
     //You can add your own app id here that you get by registering with the
@@ -24,8 +26,7 @@ class ChromecastManager: NSObject, GCKDeviceScannerListener, GCKDeviceManagerDel
     return kGCKMediaDefaultReceiverApplicationID
     }()
 
-  private var devices: [GCKDevice] = [];
-  var events : [String] = [];
+  private var devices: Dictionary<String, GCKDevice> = Dictionary<String, GCKDevice>()
 
   // Required init.
   required override init() {
@@ -47,20 +48,15 @@ class ChromecastManager: NSObject, GCKDeviceScannerListener, GCKDeviceManagerDel
   @objc func addEvent(name: String, location: String, date: NSNumber) -> Void {
     // Date is ready to use!
     //events.append(name);
-
-    for device in deviceScanner.devices  {
-      events.append(device.friendlyName)
-      devices.append(device as! GCKDevice);
-    }
   }
 
   @objc func getEventName(successCallback: RCTResponseSenderBlock) -> Void {
 
-    let resultsDict = [
-      "Msg"  : events
-    ];
-
-    successCallback([resultsDict]);
+    self.successCallback = successCallback;
+    
+    self.successCallback?([[
+      "Msg"  : devices.keys.array
+      ]]);
   }
 
   @objc func connectToDevice() -> Void {
@@ -69,7 +65,7 @@ class ChromecastManager: NSObject, GCKDeviceScannerListener, GCKDeviceManagerDel
     }
     dispatch_async(dispatch_get_main_queue(), { [unowned self] in
 
-      self.selectedDevice = self.devices[0]
+      self.selectedDevice = self.devices.values.first;
       let identifier = NSBundle.mainBundle().infoDictionary?["CFBundleIdentifier"] as! String
       self.deviceManager = GCKDeviceManager(device: self.selectedDevice, clientPackageName: identifier)
       self.deviceManager!.delegate = self
@@ -88,7 +84,7 @@ class ChromecastManager: NSObject, GCKDeviceScannerListener, GCKDeviceManagerDel
     })
   }
 
-  @objc func castVideo() -> Void {
+  @objc func castVideo(videoUrl: String) -> Void {
     println("Cast Video")
 
     // Show alert if not connected.
@@ -115,8 +111,7 @@ class ChromecastManager: NSObject, GCKDeviceScannerListener, GCKDeviceManagerDel
     // [START load-media]
     // Define Media Information.
     let mediaInformation = GCKMediaInformation(
-      contentID:
-      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+      contentID: videoUrl,
       streamType: GCKMediaStreamType.None,
       contentType: "video/mp4",
       metadata: metadata,
@@ -150,6 +145,23 @@ class ChromecastManager: NSObject, GCKDeviceScannerListener, GCKDeviceManagerDel
       deviceManager.addChannel(mediaControlChannel)
       mediaControlChannel!.requestStatus()
   }
-
+  
+  func deviceDidComeOnline(device: GCKDevice!) {
+    println("Device found: \(device.friendlyName)")
+    devices[device.friendlyName] = device;
+    
+    self.successCallback?([[
+      "Msg"  : devices.keys.array
+      ]]);
+  }
+  
+  func deviceDidGoOffline(device: GCKDevice!) {
+    println("Device went away: \(device.friendlyName)")
+    devices.removeValueForKey(device.friendlyName);
+    
+    self.successCallback?([[
+      "Msg"  : devices.keys.array
+      ]]);
+  }
 
 }

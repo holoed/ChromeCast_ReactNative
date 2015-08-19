@@ -23,6 +23,6 @@ RCT_EXTERN_METHOD(connectToDevice)
 
 RCT_EXTERN_METHOD(disconnect)
 
-RCT_EXTERN_METHOD(castVideo)
+RCT_EXTERN_METHOD(castVideo: (NSString *)videoUrl)
 
 @end
