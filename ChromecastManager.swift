@@ -67,7 +67,7 @@ class ChromecastManager: NSObject, GCKDeviceScannerListener, GCKDeviceManagerDel
     })
   }
 
-  @objc func castVideo(videoUrl: String) -> Void {
+  @objc func castVideo(videoUrl: String, title: String, description: String, imageUrl: String) -> Void {
     println("Cast Video")
 
     // Show alert if not connected.
@@ -79,15 +79,11 @@ class ChromecastManager: NSObject, GCKDeviceScannerListener, GCKDeviceManagerDel
     // [START media-metadata]
     // Define Media Metadata.
     let metadata = GCKMediaMetadata()
-    metadata.setString("Big Buck Bunny (2008)", forKey: kGCKMetadataKeyTitle)
-    metadata.setString("Big Buck Bunny tells the story of a giant rabbit with a heart bigger " +
-      "than himself. When one sunny day three rodents rudely harass him, something " +
-      "snaps... and the rabbit ain't no bunny anymore! In the typical cartoon " +
-      "tradition he prepares the nasty rodents a comical revenge.",
+    metadata.setString(title, forKey: kGCKMetadataKeyTitle)
+    metadata.setString(description,
       forKey:kGCKMetadataKeySubtitle)
 
-    let url = NSURL(string:"https://commondatastorage.googleapis.com/gtv-videos-bucket/" +
-      "sample/images/BigBuckBunny.jpg")
+    let url = NSURL(string:imageUrl)
     metadata.addImage(GCKImage(URL: url, width: 480, height: 360))
     // [END media-metadata]
 
