@@ -1,3 +1,3 @@
 # ChromeCast_ReactNative
 
-![Alt text](/docs/screenshot.png?raw=true "Screenshot")
+![Alt text](/docs/Screenshot.png?raw=true "Screenshot")
