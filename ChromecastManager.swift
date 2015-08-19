@@ -145,8 +145,9 @@ class ChromecastManager: NSObject, GCKDeviceScannerListener, GCKDeviceManagerDel
     println("Device went away: \(device.friendlyName)")
     devices.removeValueForKey(device.friendlyName);
     
+    
     self.successCallback?([[
-      "Msg"  : devices.keys.array
+      "Msg"  : devices.isEmpty ? [] : devices.keys.array
       ]]);
   }
 

@@ -20,7 +20,7 @@ var ChromeCastExperiments = React.createClass({
     return { devices: [] };
   },
 
-  initialize: function() {
+  startScan: function() {
     var _this = this;
     NativeModules.ChromecastManager.initialize(function (result) {
       console.log(result);
@@ -37,16 +37,16 @@ var ChromeCastExperiments = React.createClass({
   },
 
   castVideo: function() {
-    NativeModules.ChromecastManager.castVideo("http://192.168.0.19/Movies/Fun%20with%20Dick%20and%20Jane.mp4");
+    NativeModules.ChromecastManager.castVideo("http://192.168.0.19/Movies/The%20Big%20Lebowski.mp4");
   },
 
   render: function() {
     var _this = this;
     return (
       <View style={styles.container}>
-        <TouchableHighlight onPress={this.initialize}>
+        <TouchableHighlight onPress={this.startScan}>
           <Text style={styles.welcome}>
-            Create Device Scanner
+            Scan for devices
           </Text>
         </TouchableHighlight>
         {
