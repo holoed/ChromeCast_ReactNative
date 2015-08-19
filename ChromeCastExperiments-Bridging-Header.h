@@ -3,4 +3,5 @@
 //
 // ChromecastManager-Bridging-Header.h
 #import <GoogleCast/GoogleCast.h>
+#import "RCTEventDispatcher.h"
 #import "RCTBridgeModule.h"

@@ -11,25 +11,35 @@ var {
   Text,
   TouchableHighlight,
   View,
-  NativeModules
+  NativeModules,
+  DeviceEventEmitter
 } = React;
 
 var ChromeCastExperiments = React.createClass({
+
+  componentDidMount: function() {
+    DeviceEventEmitter.addListener('DeviceListChanged', this._deviceListChangedHandler);
+  },
+
+  componentWillUnmount: function() {
+    DeviceEventEmitter.removeListener('DeviceListChanged', this._deviceListChangedHandler);
+  },
+
+  _deviceListChangedHandler: function (data) {
+    console.log(data);
+    this.setState({ devices: data.Devices })
+  },
 
   getInitialState: function() {
     return { devices: [] };
   },
 
   startScan: function() {
-    var _this = this;
-    NativeModules.ChromecastManager.initialize(function (result) {
-      console.log(result);
-      _this.setState({ devices: result.Msg })
-    });
+    NativeModules.ChromecastManager.startScan();
   },
 
-  connectToDevice: function() {
-    NativeModules.ChromecastManager.connectToDevice();
+  connectToDevice: function(deviceName) {
+    NativeModules.ChromecastManager.connectToDevice(deviceName);
   },
 
   disconnect: function() {
@@ -52,7 +62,7 @@ var ChromeCastExperiments = React.createClass({
         {
           this.state.devices.map(function(d, i) {
             return (
-              <TouchableHighlight onPress={_this.connectToDevice}>
+              <TouchableHighlight onPress={() => _this.connectToDevice(d)}>
                 <Text>{d}</Text>
              </TouchableHighlight>);
           })

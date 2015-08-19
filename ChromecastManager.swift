@@ -13,13 +13,12 @@ import Foundation
 @objc(ChromecastManager)
 class ChromecastManager: NSObject, GCKDeviceScannerListener, GCKDeviceManagerDelegate, GCKMediaControlChannelDelegate {
 
-  private var selectedDevice: GCKDevice?
+  var bridge          : RCTBridge!
+  
   private var deviceManager: GCKDeviceManager?
   private var deviceScanner: GCKDeviceScanner
   private var mediaControlChannel: GCKMediaControlChannel?
   
-  private var successCallback: RCTResponseSenderBlock?
-
   private lazy var kReceiverAppID:String = {
     //You can add your own app id here that you get by registering with the
     // Google Cast SDK Developer Console https://cast.google.com/publish
@@ -35,9 +34,7 @@ class ChromecastManager: NSObject, GCKDeviceScannerListener, GCKDeviceManagerDel
     deviceScanner = GCKDeviceScanner(filterCriteria:filterCriteria)
   }
 
-  @objc func initialize(successCallback: RCTResponseSenderBlock) -> Void {
-    
-    self.successCallback = successCallback;
+  @objc func startScan() -> Void {
     dispatch_async(dispatch_get_main_queue(), { [unowned self] in
       // Initialize device scanner
       self.deviceScanner.addListener(self)
@@ -45,15 +42,15 @@ class ChromecastManager: NSObject, GCKDeviceScannerListener, GCKDeviceManagerDel
     })
   }
 
-  @objc func connectToDevice() -> Void {
-    if (devices.count <= 0) {
+  @objc func connectToDevice(deviceName: String) -> Void {
+    let selectedDevice = self.devices[deviceName]
+    if (selectedDevice == nil) {
       return
     }
+    
     dispatch_async(dispatch_get_main_queue(), { [unowned self] in
-
-      self.selectedDevice = self.devices.values.first;
       let identifier = NSBundle.mainBundle().infoDictionary?["CFBundleIdentifier"] as! String
-      self.deviceManager = GCKDeviceManager(device: self.selectedDevice, clientPackageName: identifier)
+      self.deviceManager = GCKDeviceManager(device: selectedDevice, clientPackageName: identifier)
       self.deviceManager!.delegate = self
       self.deviceManager!.connect()
     })
@@ -135,20 +132,15 @@ class ChromecastManager: NSObject, GCKDeviceScannerListener, GCKDeviceManagerDel
   func deviceDidComeOnline(device: GCKDevice!) {
     println("Device found: \(device.friendlyName)")
     devices[device.friendlyName] = device;
-    
-    self.successCallback?([[
-      "Msg"  : devices.keys.array
-      ]]);
-  }
+    emitDeviceListChanged(["Devices": devices.keys.array])  }
   
   func deviceDidGoOffline(device: GCKDevice!) {
     println("Device went away: \(device.friendlyName)")
     devices.removeValueForKey(device.friendlyName);
-    
-    
-    self.successCallback?([[
-      "Msg"  : devices.isEmpty ? [] : devices.keys.array
-      ]]);
+    emitDeviceListChanged(["Devices": devices.keys.array])
   }
-
+  
+  private func emitDeviceListChanged(data: AnyObject) {
+    self.bridge.eventDispatcher.sendDeviceEventWithName("DeviceListChanged", body: data)
+  }
 }

@@ -9,13 +9,14 @@
 #import <Foundation/Foundation.h>
 
 // ChromecastManagerBridge.m
+#import "RCTEventDispatcher.h"
 #import "RCTBridgeModule.h"
 
 @interface RCT_EXTERN_MODULE(ChromecastManager, NSObject)
 
-RCT_EXTERN_METHOD(initialize:(RCTResponseSenderBlock *)successCallback)
+RCT_EXTERN_METHOD(startScan)
 
-RCT_EXTERN_METHOD(connectToDevice)
+RCT_EXTERN_METHOD(connectToDevice: (NSString *) deviceName)
 
 RCT_EXTERN_METHOD(disconnect)
 
