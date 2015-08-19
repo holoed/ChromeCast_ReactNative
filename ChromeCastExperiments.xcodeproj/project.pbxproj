@@ -24,8 +24,8 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		1A21E4C43BE5DF66918F19CB /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D4812965AFBFB3695A7548B /* libPods.a */; };
 		6CA11E521B83D636008765DC /* GoogleCast.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CA11E511B83D636008765DC /* GoogleCast.framework */; };
-		6CD7DA381B7CC139006B3697 /* CalendarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD7DA371B7CC139006B3697 /* CalendarManager.swift */; };
-		6CD7DA3A1B7CC1A4006B3697 /* CalendarManagerBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CD7DA391B7CC1A4006B3697 /* CalendarManagerBridge.m */; };
+		6CD7DA381B7CC139006B3697 /* ChromecastManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD7DA371B7CC139006B3697 /* ChromecastManager.swift */; };
+		6CD7DA3A1B7CC1A4006B3697 /* ChromecastManagerBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CD7DA391B7CC1A4006B3697 /* ChromecastManagerBridge.m */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 /* End PBXBuildFile section */
 
@@ -132,8 +132,8 @@
 		4D4812965AFBFB3695A7548B /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		6CA11E511B83D636008765DC /* GoogleCast.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleCast.framework; path = "Pods/google-cast-sdk/GoogleCastSDK-2.7.1-Release/GoogleCast.framework"; sourceTree = "<group>"; };
 		6CD7DA361B7CC139006B3697 /* ChromeCastExperiments-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ChromeCastExperiments-Bridging-Header.h"; sourceTree = "<group>"; };
-		6CD7DA371B7CC139006B3697 /* CalendarManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarManager.swift; sourceTree = "<group>"; };
-		6CD7DA391B7CC1A4006B3697 /* CalendarManagerBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarManagerBridge.m; sourceTree = "<group>"; };
+		6CD7DA371B7CC139006B3697 /* ChromecastManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChromecastManager.swift; sourceTree = "<group>"; };
+		6CD7DA391B7CC1A4006B3697 /* ChromecastManagerBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChromecastManagerBridge.m; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		A7CCD699772774B7B8100C37 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -253,9 +253,9 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
-				6CD7DA371B7CC139006B3697 /* CalendarManager.swift */,
+				6CD7DA371B7CC139006B3697 /* ChromecastManager.swift */,
 				6CD7DA361B7CC139006B3697 /* ChromeCastExperiments-Bridging-Header.h */,
-				6CD7DA391B7CC1A4006B3697 /* CalendarManagerBridge.m */,
+				6CD7DA391B7CC1A4006B3697 /* ChromecastManagerBridge.m */,
 			);
 			name = ChromeCastExperiments;
 			sourceTree = "<group>";
@@ -600,8 +600,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6CD7DA3A1B7CC1A4006B3697 /* CalendarManagerBridge.m in Sources */,
-				6CD7DA381B7CC139006B3697 /* CalendarManager.swift in Sources */,
+				6CD7DA3A1B7CC1A4006B3697 /* ChromecastManagerBridge.m in Sources */,
+				6CD7DA381B7CC139006B3697 /* ChromecastManager.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);

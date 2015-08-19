@@ -1,5 +1,5 @@
 //
-//  CalendarManagerBridge.m
+//  ChromecastManagerBridge.m
 //  ChromeCastExperiments
 //
 //  Created by Edmondo Pentangelo on 13/08/2015.
@@ -8,10 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-// CalendarManagerBridge.m
+// ChromecastManagerBridge.m
 #import "RCTBridgeModule.h"
 
-@interface RCT_EXTERN_MODULE(CalendarManager, NSObject)
+@interface RCT_EXTERN_MODULE(ChromecastManager, NSObject)
 
 RCT_EXTERN_METHOD(initialize)
 

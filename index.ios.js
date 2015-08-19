@@ -21,11 +21,11 @@ var ChromeCastExperiments = React.createClass({
   },
 
   initialize: function() {
-    NativeModules.CalendarManager.initialize();
+    NativeModules.ChromecastManager.initialize();
   },
 
   addDevicesToList: function() {
-    NativeModules.CalendarManager.addEvent(
+    NativeModules.ChromecastManager.addEvent(
             'Birthday Party',
             '4 Privet Drive, Surrey',
             42);
@@ -33,22 +33,22 @@ var ChromeCastExperiments = React.createClass({
 
   getDevicesNames: function() {
     var _this = this;
-    NativeModules.CalendarManager.getEventName(function (x) {
+    NativeModules.ChromecastManager.getEventName(function (x) {
       console.log(x);
       _this.setState({ devices: x.Msg })
     });
   },
 
   connectToDevice: function() {
-    NativeModules.CalendarManager.connectToDevice();
+    NativeModules.ChromecastManager.connectToDevice();
   },
 
   disconnect: function() {
-    NativeModules.CalendarManager.disconnect();
+    NativeModules.ChromecastManager.disconnect();
   },
 
   castVideo: function() {
-    NativeModules.CalendarManager.castVideo();
+    NativeModules.ChromecastManager.castVideo();
   },
 
   render: function() {

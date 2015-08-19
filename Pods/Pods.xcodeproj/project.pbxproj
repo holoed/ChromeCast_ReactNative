@@ -13,7 +13,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		046102CACA9E11B9E08027FA8DE90722 /* PBXContainerItemProxy */ = {
+		697C78243D2AF423618F75137AC04F70 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
@@ -239,7 +239,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				AC969DD94085B0C357A317763A381E0C /* PBXTargetDependency */,
+				EBF7B1DD144A73C793197F64745444A2 /* PBXTargetDependency */,
 			);
 			name = Pods;
 			productName = Pods;
@@ -303,11 +303,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		AC969DD94085B0C357A317763A381E0C /* PBXTargetDependency */ = {
+		EBF7B1DD144A73C793197F64745444A2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "google-cast-sdk-CastFrameworkAssets";
 			target = 0E876B1EFB87AAE5B8BA551A5930A7A4 /* google-cast-sdk-CastFrameworkAssets */;
-			targetProxy = 046102CACA9E11B9E08027FA8DE90722 /* PBXContainerItemProxy */;
+			targetProxy = 697C78243D2AF423618F75137AC04F70 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
