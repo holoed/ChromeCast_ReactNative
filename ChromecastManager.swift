@@ -35,28 +35,14 @@ class ChromecastManager: NSObject, GCKDeviceScannerListener, GCKDeviceManagerDel
     deviceScanner = GCKDeviceScanner(filterCriteria:filterCriteria)
   }
 
-  @objc func initialize() -> Void {
-    //events.append("init");
-
+  @objc func initialize(successCallback: RCTResponseSenderBlock) -> Void {
+    
+    self.successCallback = successCallback;
     dispatch_async(dispatch_get_main_queue(), { [unowned self] in
       // Initialize device scanner
       self.deviceScanner.addListener(self)
       self.deviceScanner.startScan()
     })
-  }
-
-  @objc func addEvent(name: String, location: String, date: NSNumber) -> Void {
-    // Date is ready to use!
-    //events.append(name);
-  }
-
-  @objc func getEventName(successCallback: RCTResponseSenderBlock) -> Void {
-
-    self.successCallback = successCallback;
-    
-    self.successCallback?([[
-      "Msg"  : devices.keys.array
-      ]]);
   }
 
   @objc func connectToDevice() -> Void {

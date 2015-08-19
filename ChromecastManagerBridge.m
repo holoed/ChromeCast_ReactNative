@@ -13,11 +13,7 @@
 
 @interface RCT_EXTERN_MODULE(ChromecastManager, NSObject)
 
-RCT_EXTERN_METHOD(initialize)
-
-RCT_EXTERN_METHOD(addEvent:(NSString *)name location:(NSString *)location date:(NSNumber *)date)
-
-RCT_EXTERN_METHOD(getEventName:(RCTResponseSenderBlock *)successCallback)
+RCT_EXTERN_METHOD(initialize:(RCTResponseSenderBlock *)successCallback)
 
 RCT_EXTERN_METHOD(connectToDevice)
 

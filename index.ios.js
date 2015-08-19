@@ -21,14 +21,10 @@ var ChromeCastExperiments = React.createClass({
   },
 
   initialize: function() {
-    NativeModules.ChromecastManager.initialize();
-  },
-
-  getDevicesNames: function() {
     var _this = this;
-    NativeModules.ChromecastManager.getEventName(function (x) {
-      console.log(x);
-      _this.setState({ devices: x.Msg })
+    NativeModules.ChromecastManager.initialize(function (result) {
+      console.log(result);
+      _this.setState({ devices: result.Msg })
     });
   },
 
@@ -51,11 +47,6 @@ var ChromeCastExperiments = React.createClass({
         <TouchableHighlight onPress={this.initialize}>
           <Text style={styles.welcome}>
             Create Device Scanner
-          </Text>
-        </TouchableHighlight>
-        <TouchableHighlight onPress={this.getDevicesNames}>
-          <Text style={styles.welcome}>
-            Get Devices list
           </Text>
         </TouchableHighlight>
         {
