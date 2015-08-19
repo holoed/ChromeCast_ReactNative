@@ -690,7 +690,7 @@
 				PRODUCT_NAME = ChromeCastExperiments;
 				SWIFT_OBJC_BRIDGING_HEADER = "ChromeCastExperiments-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -716,7 +716,7 @@
 				"OTHER_LDFLAGS[arch=*]" = "$(inherited)";
 				PRODUCT_NAME = ChromeCastExperiments;
 				SWIFT_OBJC_BRIDGING_HEADER = "ChromeCastExperiments-Bridging-Header.h";
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
