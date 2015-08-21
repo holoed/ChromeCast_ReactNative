@@ -23,3 +23,14 @@ Sample app showing Chromecast IOS Api used from React-Native JavaScript
 * Click "Cast Video" to start playing the Video on the Chromecast.
 * Click "Disconnect" when you like to stop the video and disconnect from the Chromecast.
 
+## TODOS
+
+- [ ] Create package for npmjs
+- [ ] Seek to time interval
+- [ ] Pause, resume, stop
+- [ ] Report current video time 
+- [ ] Add to react.parts
+
+## License
+See [LICENSE](LICENSE)
+
