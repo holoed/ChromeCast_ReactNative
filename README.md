@@ -1,6 +1,6 @@
 # ChromeCast_ReactNative
 
-Sample app showing Chromecast IOS Api used from React-Native JavaScript
+Sample app showing Chromecast IOS API used from React-Native JavaScript
 
 ![Alt text](/docs/Screenshot.png?raw=true "Screenshot")
 
