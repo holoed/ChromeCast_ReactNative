@@ -1,4 +1,4 @@
-# ChromeCast_ReactNative
+# ChromeCast ReactNative
 
 Sample app showing Chromecast IOS API used from React-Native JavaScript (Developed in Swift)
 
