@@ -14,17 +14,22 @@ var {
   View,
   ScrollView,
   NativeModules,
-  DeviceEventEmitter
+  DeviceEventEmitter,
+  SliderIOS
 } = React;
+
+var { ChromecastManager } = NativeModules;
 
 var ChromeCastExperiments = React.createClass({
 
   componentDidMount: function() {
     DeviceEventEmitter.addListener('DeviceListChanged', this._deviceListChangedHandler);
+    DeviceEventEmitter.addListener('MediaStatusUpdated', this._mediaStatusUpdatedHandler);
   },
 
   componentWillUnmount: function() {
     DeviceEventEmitter.removeListener('DeviceListChanged', this._deviceListChangedHandler);
+    DeviceEventEmitter.removeListener('MediaStatusUpdated', this._mediaStatusUpdatedHandler);
   },
 
   _deviceListChangedHandler: function (data) {
@@ -32,6 +37,11 @@ var ChromeCastExperiments = React.createClass({
     this.setState({ devices: data.Devices })
   },
 
+  _mediaStatusUpdatedHandler: function (data) {
+    console.log(data);
+    this.setState({ duration: data.Duration });
+  },
+ 
   getInitialState: function() {
     return {
       devices: [],
@@ -45,23 +55,59 @@ var ChromeCastExperiments = React.createClass({
   },
 
   startScan: function() {
-    NativeModules.ChromecastManager.startScan();
+    ChromecastManager.startScan();
   },
 
   connectToDevice: function(deviceName) {
-    NativeModules.ChromecastManager.connectToDevice(deviceName);
+    ChromecastManager.connectToDevice(deviceName);
+    this.setState({ connected: true });
+    this.startObservingStreamPosition();
   },
 
   disconnect: function() {
-    NativeModules.ChromecastManager.disconnect();
+    ChromecastManager.disconnect();
+    this.setState({ connected: false });
+    this.stopObserviceStreamPosition();
   },
 
   castVideo: function() {
-    NativeModules.ChromecastManager.castVideo(
-      this.state.url,
-      this.state.title,
-      this.state.description,
-      this.state.imageUrl);
+    if (this.state.connected) {
+      ChromecastManager.castVideo(
+        this.state.url,
+        this.state.title,
+        this.state.description,
+        this.state.imageUrl);
+    }
+  },
+
+  play: function() {
+    ChromecastManager.play();
+  },
+
+  pause: function() {
+    ChromecastManager.pause();
+  },
+
+  seekToTime: function(value) {
+    ChromecastManager.seekToTime(value);
+  },
+
+  startObservingStreamPosition: function() {
+    var _this = this;
+    this.stopObserviceStreamPosition();
+    this.setState({ positionSubscription: setInterval(() => {
+        ChromecastManager.getStreamPosition(pos => {
+            console.log(pos);
+            _this.setState({ currentPosition: pos });
+        });
+    }, 1000) });
+  },
+
+  stopObserviceStreamPosition: function() {
+    if (this.state.positionSubscription != null) {
+      clearInterval(this.state.positionSubscription);
+      this.setState({ positionSubscription: null });
+    }
   },
 
   render: function() {
@@ -69,56 +115,71 @@ var ChromeCastExperiments = React.createClass({
     return (
       <View style={styles.container}>
         <ScrollView>
-         <View style={{paddingBottom: 200}}>
-          <TouchableHighlight onPress={this.startScan}>
-            <Text style={[styles.text, {marginTop:30}]}>
-              Scan for devices
-            </Text>
-          </TouchableHighlight>
-          <ScrollView contentInset={{top: -20}} style={{ width: 250, borderWidth: 0.5, borderColor: '#0f0f0f'}}>
-           {(this.state.devices.length <=0) ?
-             (<Text style={styles.welcome}>No devices available</Text>) :
-             (this.state.devices.map((d, i) =>
-               (<TouchableHighlight onPress={() => this.connectToDevice(d)}>
-                  <Text style={styles.text}>{d}</Text>
-                </TouchableHighlight>)))}
-         </ScrollView>
-          <WithLabel label="MP4">
-            <TextInput
-             style={styles.default}
-             onChangeText={(text) => this.setState({url: text})}
-             value={this.state.url}/>
-          </WithLabel>
-          <WithLabel label="Title">
-            <TextInput
-             style={styles.default}
-             onChangeText={(text) => this.setState({title: text})}
-             value={this.state.title}/>
-          </WithLabel>
-          <WithLabel label="Description">
-            <TextInput
-             multiline={true}
-             style={[styles.default, { height: 150 }]}
-             onChangeText={(text) => this.setState({description: text})}
-             value={this.state.description}/>
-          </WithLabel>
-          <WithLabel label="Image Url">
-            <TextInput
-             style={styles.default}
-             onChangeText={(text) => this.setState({imageUrl: text})}
-             value={this.state.imageUrl}/>
-          </WithLabel>
-          <TouchableHighlight onPress={this.castVideo}>
-            <Text style={styles.text}>
-              Cast Video
-            </Text>
-          </TouchableHighlight>
-          <TouchableHighlight onPress={this.disconnect}>
-            <Text style={styles.text}>
-              Disconnect
-            </Text>
-          </TouchableHighlight>
-          </View>
+           <View style={{paddingBottom: 200, flexDirection:'column', alignItems: 'center' }}>
+              <TouchableHighlight onPress={this.startScan}>
+                <Text style={[styles.text, {marginTop:30}]}>
+                  Scan for devices
+                </Text>
+              </TouchableHighlight>
+              <ScrollView contentInset={{top: -20}} style={{ width: 250, borderWidth: 0.5, borderColor: '#0f0f0f'}}>
+               {(this.state.devices.length <=0) ?
+                 (<Text style={styles.welcome}>No devices available</Text>) :
+                 (this.state.devices.map((d, i) =>
+                   (<TouchableHighlight onPress={() => this.connectToDevice(d)}>
+                      <Text style={styles.text}>{d}</Text>
+                    </TouchableHighlight>)))}
+             </ScrollView>
+              <WithLabel label="MP4">
+                <TextInput
+                 style={styles.default}
+                 onChangeText={(text) => this.setState({url: text})}
+                 value={this.state.url}/>
+              </WithLabel>
+              <WithLabel label="Title">
+                <TextInput
+                 style={styles.default}
+                 onChangeText={(text) => this.setState({title: text})}
+                 value={this.state.title}/>
+              </WithLabel>
+              <WithLabel label="Description">
+                <TextInput
+                 multiline={true}
+                 style={[styles.default, { height: 150 }]}
+                 onChangeText={(text) => this.setState({description: text})}
+                 value={this.state.description}/>
+              </WithLabel>
+              <WithLabel label="Image Url">
+                <TextInput
+                 style={styles.default}
+                 onChangeText={(text) => this.setState({imageUrl: text})}
+                 value={this.state.imageUrl}/>
+              </WithLabel>
+              <View style={{ flexDirection:'row', display: 'flex' }}>
+                <TouchableHighlight onPress={this.castVideo}>
+                  <Text style={styles.button}>
+                    Cast Video
+                  </Text>
+                </TouchableHighlight>
+                <TouchableHighlight onPress={this.disconnect}>
+                  <Text style={styles.button}>
+                    Disconnect
+                  </Text>
+                </TouchableHighlight>
+              </View>
+              <SliderIOS style={{ width: 250 }} onValueChange={this.seekToTime} maximumValue={this.state.duration} value={this.state.currentPosition} />
+              <View style={{ flexDirection:'row', display: 'flex' }}>
+                <TouchableHighlight onPress={this.play}>
+                  <Text style={styles.button}>
+                    Play
+                  </Text>
+                </TouchableHighlight>
+                <TouchableHighlight onPress={this.pause}>
+                  <Text style={styles.button}>
+                    Pause
+                  </Text>
+                </TouchableHighlight>
+              </View>
+           </View>
         </ScrollView>
       </View>
     );
@@ -170,14 +231,21 @@ var styles = StyleSheet.create({
     paddingTop: 2,
   },
   text: {
-  color: '#007aff',
-  fontFamily: '.HelveticaNeueInterface-MediumP4',
-  fontSize: 17,
-  margin: 10,
-  width: 220,
-  fontWeight: 'bold',
-  textAlign: 'center',
-},
+    color: '#007aff',
+    fontFamily: '.HelveticaNeueInterface-MediumP4',
+    fontSize: 17,
+    margin: 10,
+    width: 220,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  button: {
+    width: 100, 
+    margin: 10, 
+    color: '#007aff', 
+    fontWeight: 'bold', 
+    textAlign: 'center' 
+  }
 });
 
 AppRegistry.registerComponent('ChromeCastExperiments', () => ChromeCastExperiments);

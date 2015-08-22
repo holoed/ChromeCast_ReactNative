@@ -24,4 +24,12 @@ RCT_EXTERN_METHOD(castVideo: (NSString *)videoUrl title:(NSString *)title
                                                   description:(NSString *)description
                                                   imageUrl:(NSString *)imageUrl)
 
+RCT_EXTERN_METHOD(play)
+
+RCT_EXTERN_METHOD(pause)
+
+RCT_EXTERN_METHOD(getStreamPosition: (RCTResponseSenderBlock *)successCallback)
+
+RCT_EXTERN_METHOD(seekToTime: (double) time)
+
 @end

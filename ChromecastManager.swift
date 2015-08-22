@@ -3,7 +3,6 @@
 //  ChromeCastExperiments
 //
 //  Created by Edmondo Pentangelo on 13/08/2015.
-//  Copyright (c) 2015 Facebook. All rights reserved.
 //
 
 import Foundation
@@ -66,6 +65,27 @@ class ChromecastManager: NSObject, GCKDeviceScannerListener, GCKDeviceManagerDel
       self.deviceManager!.disconnect()
     })
   }
+  
+  @objc func pause() -> Void {
+    self.mediaControlChannel?.pause();
+  }
+  
+  @objc func play() -> Void {
+    self.mediaControlChannel?.play();
+  }
+  
+  @objc func seekToTime(time: Double) -> Void {
+    let timeInterval = NSTimeInterval(time);
+    self.mediaControlChannel?.seekToTimeInterval(timeInterval);
+  }
+  
+  @objc func getStreamPosition(successCallback: RCTResponseSenderBlock) -> Void {
+    let position = self.mediaControlChannel?.approximateStreamPosition();
+    if (position != nil) {
+      let positionDouble = Double(position!);
+      successCallback([positionDouble]);
+    }
+  }
 
   @objc func castVideo(videoUrl: String, title: String, description: String, imageUrl: String) -> Void {
     println("Cast Video")
@@ -104,6 +124,15 @@ class ChromecastManager: NSObject, GCKDeviceScannerListener, GCKDeviceManagerDel
       // Cast the media
       self.mediaControlChannel!.loadMedia(mediaInformation, autoplay: true)
     })
+  }
+  
+  func mediaControlChannelDidUpdateStatus(mediaControlChannel: GCKMediaControlChannel!) {
+    println("updated status");
+    if (mediaControlChannel.isConnected && mediaControlChannel != nil && mediaControlChannel.mediaStatus != nil) {
+       let info = mediaControlChannel.mediaStatus.mediaInformation;
+       println(info.streamDuration);
+       self.bridge.eventDispatcher.sendDeviceEventWithName("MediaStatusUpdated", body: ["Duration": info.streamDuration]);
+    }
   }
 
   func deviceManagerDidConnect(deviceManager: GCKDeviceManager!) {
