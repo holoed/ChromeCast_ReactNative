@@ -26,9 +26,10 @@ Sample app showing Chromecast IOS API used from React-Native JavaScript (Develop
 ## TODOS
 
 - [ ] Create package for npmjs
-- [ ] Seek to time interval
-- [ ] Pause, resume, stop
-- [ ] Report current video time 
+- [X] Reconnect to device playing a video
+- [X] Seek to time interval
+- [X] Pause, resume, stop
+- [X] Report current video time 
 - [ ] Add to react.parts
 
 ## License
