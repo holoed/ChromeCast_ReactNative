@@ -131,7 +131,12 @@ class ChromecastManager: NSObject, GCKDeviceScannerListener, GCKDeviceManagerDel
     if (mediaControlChannel.isConnected && mediaControlChannel != nil && mediaControlChannel.mediaStatus != nil) {
        let info = mediaControlChannel.mediaStatus.mediaInformation;
        println(info.streamDuration);
-       self.bridge.eventDispatcher.sendDeviceEventWithName("MediaStatusUpdated", body: ["Duration": info.streamDuration]);
+       self.bridge.eventDispatcher.sendDeviceEventWithName("MediaStatusUpdated",
+        body: ["Duration": info.streamDuration,
+               "Url": info.contentID,
+               "Title": info.metadata.stringForKey(kGCKMetadataKeyTitle),
+               "Description": info.metadata.stringForKey(kGCKMetadataKeySubtitle),
+               "ImageUrl": info.metadata.images().reduce("", combine: { (acc, x) -> String in return ((x as! GCKImage).URL!.absoluteString!) + acc })]);
     }
   }
 

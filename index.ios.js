@@ -39,7 +39,11 @@ var ChromeCastExperiments = React.createClass({
 
   _mediaStatusUpdatedHandler: function (data) {
     console.log(data);
-    this.setState({ duration: data.Duration });
+    this.setState({ url: data.Url,
+                    title: data.Title,
+                    description: data.Description,
+                    imageUrl: data.ImageUrl, 
+                    duration: data.Duration });
   },
  
   getInitialState: function() {
